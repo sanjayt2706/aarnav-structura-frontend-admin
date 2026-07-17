@@ -64,14 +64,14 @@ export default function Visitors() {
           <tbody>
             {rows.map((r) => (
               <tr key={r.id}>
-                <td>{r.ip_address}</td>
+                <td>{r.ipAddress}</td>
                 <td>{r.country || "—"}</td>
                 <td>{r.city || "—"}</td>
                 <td>{r.browser || "—"}</td>
-                <td>{r.device_type || "—"}</td>
+                <td>{r.deviceType || "—"}</td>
                 <td>{r.os || "—"}</td>
-                <td>{r.current_page}</td>
-                <td>{new Date(r.visited_at).toLocaleString()}</td>
+                <td>{r.currentPage}</td>
+                <td>{new Date(r.visitedAt).toLocaleString()}</td>
               </tr>
             ))}
             {!loading && rows.length === 0 && <tr><td colSpan={8} className="empty-state">No visits recorded yet</td></tr>}
