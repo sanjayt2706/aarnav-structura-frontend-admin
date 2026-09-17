@@ -4,13 +4,13 @@ import { useAuth } from "../context/AuthContext";
 const LINKS = [
   { to: "/", label: "Overview", icon: "📊", end: true },
   { to: "/enquiries", label: "Enquiries", icon: "📩" },
-  { to: "/visitors", label: "Visitors", icon: "👥" }
-  // { to: "/projects", label: "Projects", icon: "🏗️" },
-  // { to: "/gallery", label: "Gallery", icon: "🖼️" },
-  // { to: "/services", label: "Services", icon: "🛠️" },
-  // { to: "/testimonials", label: "Testimonials", icon: "💬" },
-  // { to: "/team", label: "Team", icon: "👷" },
-  // { to: "/settings", label: "Website Content", icon: "⚙️" }
+  { to: "/visitors", label: "Visitors", icon: "👥" },
+  { to: "/projects", label: "Projects", icon: "🏗️" },
+  { to: "/team", label: "Team / Engineers", icon: "👷" },
+  { to: "/services", label: "Services", icon: "🛠️" },
+  { to: "/gallery", label: "Gallery", icon: "🖼️" },
+  { to: "/testimonials", label: "Testimonials", icon: "💬" },
+  { to: "/settings", label: "Website Content", icon: "⚙️" }
 ];
 
 export default function Layout({ children }) {
