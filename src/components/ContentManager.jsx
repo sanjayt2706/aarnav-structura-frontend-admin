@@ -151,6 +151,7 @@ export default function ContentManager({ config }) {
     setModal((m) => ({ ...m, data: { ...m.data, [key]: value } }));
 
   const imgSrc = (item) => {
+    if (!item) return null;
     const path =
       item[config.imageField] ||
       item.cover_image ||
@@ -161,6 +162,12 @@ export default function ContentManager({ config }) {
       return path;
     }
     const base = (API.defaults.baseURL || "http://localhost:5000").replace(/\/$/, "");
+    if (/^[0-9a-fA-F]{24}$/.test(path)) {
+      return `${base}/api/files/${path}`;
+    }
+    if (path.startsWith("/api/files/")) {
+      return `${base}${path}`;
+    }
     return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 

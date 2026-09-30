@@ -43,6 +43,17 @@ export default function Enquiries() {
     load();
   };
 
+  const deleteSingle = async (id) => {
+    if (!confirm("Are you sure you want to delete this enquiry?")) return;
+    try {
+      await API.delete(`/api/admin/enquiries/${id}`);
+      if (active && active._id === id) setActive(null);
+      load();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete enquiry.");
+    }
+  };
+
   const bulkStatus = async (newStatus) => {
     if (!selected.length) return;
     await API.patch("/api/admin/enquiries/bulk/status", { ids: selected, status: newStatus });
@@ -101,7 +112,7 @@ export default function Enquiries() {
           <thead>
             <tr>
               <th><input type="checkbox" onChange={(e) => setSelected(e.target.checked ? rows.map((r) => r._id) : [])} /></th>
-              <th>Name</th><th>Phone</th><th>Project Type</th><th>Budget</th><th>Location</th><th>Status</th><th>Received</th><th></th>
+              <th>Name</th><th>Phone</th><th>Project Type</th><th>Budget</th><th>Location</th><th>Status</th><th>Received</th><th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -119,7 +130,12 @@ export default function Enquiries() {
                   </select>
                 </td>
                 <td>{new Date(r.createdAt).toLocaleDateString()}</td>
-                <td><button className="btn" onClick={() => { setActive(r); setNotesDraft(r.adminNotes || ""); }}>View</button></td>
+                <td>
+                  <div style={{ display: "flex", gap: 6 }}>
+                    <button className="btn" onClick={() => { setActive(r); setNotesDraft(r.adminNotes || ""); }}>View</button>
+                    <button className="btn btn-danger" onClick={() => deleteSingle(r._id)}>Delete</button>
+                  </div>
+                </td>
               </tr>
             ))}
             {!loading && rows.length === 0 && (
@@ -152,6 +168,7 @@ export default function Enquiries() {
             </div>
             <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
               <button className="btn btn-primary" onClick={saveNotes}>Save notes</button>
+              <button className="btn btn-danger" onClick={() => deleteSingle(active._id)}>Delete enquiry</button>
               <button className="btn" onClick={() => setActive(null)}>Close</button>
             </div>
           </div>
