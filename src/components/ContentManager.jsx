@@ -206,6 +206,10 @@ export default function ContentManager({ config }) {
                 <img
                   src={image}
                   alt={item[config.titleField] || ""}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80";
+                  }}
                   style={{ width: "100%", height: 160, objectFit: "cover", display: "block" }}
                 />
               ) : (
