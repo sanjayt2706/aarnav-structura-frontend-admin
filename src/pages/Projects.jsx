@@ -7,6 +7,7 @@ const config = {
   imageLabel: "Cover image",
   titleField: "title",
   subField: "category",
+  defaults: { status: "published" },
   multipleFiles: [
     { name: "media_files", label: "Gallery Media (Photos/Videos)", accept: "image/*,video/*" },
     { name: "document_files", label: "Project Documents (PDF/Docx/DWG)", accept: ".pdf,.docx,.dwg" }
@@ -17,8 +18,8 @@ const config = {
     { key: "location", label: "Location" },
     { key: "year", label: "Year" },
     { key: "area_sqft", label: "Area (sqft)" },
-    { key: "status", label: "Status", type: "select", options: ["draft", "published"] },
-    { key: "is_featured", label: "Featured", type: "checkbox" },
+    { key: "status", label: "Show on website", type: "select", options: ["published", "draft"], noEmpty: true },
+    { key: "is_featured", label: "Featured on home page", type: "checkbox" },
     { key: "display_order", label: "Display order", type: "number" },
     { key: "description", label: "Description", type: "textarea", wide: true },
     { key: "brief", label: "Brief (Short summary)", type: "textarea", wide: true },

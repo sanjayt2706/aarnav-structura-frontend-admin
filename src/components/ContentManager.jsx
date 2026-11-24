@@ -52,7 +52,7 @@ export default function ContentManager({ config }) {
     setFiles({});
     setPreviews({});
     setError(null);
-    setModal({ mode: "create", data: {} });
+    setModal({ mode: "create", data: { ...(config.defaults || {}) } });
   };
 
   const openEdit = (item) => {
@@ -105,7 +105,7 @@ export default function ContentManager({ config }) {
         const val = modal.data[f.key];
         if (f.type === "checkbox") {
           form.append(f.key, val ? "true" : "false");
-        } else if (val !== undefined && val !== null) {
+        } else if (val !== undefined && val !== null && !(f.type === "select" && val === "")) {
           form.append(f.key, val);
         }
       });
@@ -262,7 +262,7 @@ export default function ContentManager({ config }) {
                         value={modal.data[f.key] || ""}
                         onChange={(e) => setField(f.key, e.target.value)}
                       >
-                        <option value="">—</option>
+                        {!f.noEmpty && <option value="">—</option>}
                         {f.options.map((o) => (
                           <option key={o} value={o}>
                             {o}

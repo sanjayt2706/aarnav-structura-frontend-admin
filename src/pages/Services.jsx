@@ -1,20 +1,20 @@
 import ContentManager from "../components/ContentManager";
 
+// Field names match the backend Service model.
 const config = {
   endpoint: "/api/services",
   title: "Services",
   imageField: "image",
-  imageLabel: "Image",
+  imageLabel: "Photo (wide/landscape works best)",
   titleField: "title",
-  subField: "short_description",
+  subField: "status",
+  defaults: { status: "Published" },
   fields: [
     { key: "title", label: "Title", required: true },
-    { key: "slug", label: "Slug", required: true },
-    { key: "icon", label: "Icon (emoji/class)" },
-    { key: "is_active", label: "Active", type: "checkbox" },
-    { key: "display_order", label: "Display order", type: "number" },
-    { key: "short_description", label: "Short description", type: "textarea", wide: true },
-    { key: "full_description", label: "Full description", type: "textarea", wide: true }
+    { key: "status", label: "Show on website", type: "select", options: ["Published", "Draft"], noEmpty: true },
+    { key: "order", label: "Order (smaller shows first)", type: "number" },
+    { key: "featured", label: "Featured", type: "checkbox" },
+    { key: "description", label: "Description", type: "textarea", wide: true }
   ]
 };
 
