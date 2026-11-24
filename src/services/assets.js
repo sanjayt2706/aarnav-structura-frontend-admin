@@ -5,7 +5,7 @@ export const SITE_URL = (
   import.meta.env.VITE_SITE_URL ||
   (typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname)
     ? "http://localhost:5173"
-    : "https://www.aarnavstructura.in")
+    : "https://aarnavstructura.in")
 ).replace(/\/$/, "");
 
 /** Turns a stored value (upload id, URL or site path) into something an <img> can show. */
