@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
 import Layout from "../layouts/Layout";
+import { previewUrl } from "../services/assets";
 
 /**
  * config = {
@@ -152,24 +153,11 @@ export default function ContentManager({ config }) {
 
   const imgSrc = (item) => {
     if (!item) return null;
-    const path =
-      item[config.imageField] ||
-      item.cover_image ||
-      item.photo ||
-      item.image;
-    if (!path) return null;
-    if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("data:")) {
-      return path;
-    }
-    const base = (API.defaults.baseURL || "http://localhost:5000").replace(/\/$/, "");
-    if (/^[0-9a-fA-F]{24}$/.test(path)) {
-      return `${base}/api/files/${path}`;
-    }
-    if (path.startsWith("/api/files/")) {
-      return `${base}${path}`;
-    }
-    return `${base}${path.startsWith("/") ? "" : "/"}${path}`;
+    const path = item[config.imageField] || item.cover_image || item.photo || item.image;
+    return path ? previewUrl(path) : null;
   };
+
+  const isVideoItem = (item) => item?.mediaType === "video" || /\.(mp4|webm|mov)(\?|$)/i.test(item?.image || "");
 
   return (
     <Layout>
@@ -202,7 +190,9 @@ export default function ContentManager({ config }) {
           const image = imgSrc(item);
           return (
             <div className="content-item" key={id || Math.random()}>
-              {image ? (
+              {image && isVideoItem(item) ? (
+                <video src={image} poster={item.poster ? previewUrl(item.poster) : undefined} muted preload="metadata" style={{ width: "100%", height: 160, objectFit: "cover", display: "block", background: "#000" }} />
+              ) : image ? (
                 <img
                   src={image}
                   alt={item[config.titleField] || ""}
@@ -305,7 +295,7 @@ export default function ContentManager({ config }) {
                       className="input"
                       style={{ width: "100%" }}
                       type="file"
-                      accept="image/*"
+                      accept={config.imageAccept || "image/*"}
                       onChange={(e) => handleFileChange(e, config.imageField, false)}
                     />
 
@@ -313,11 +303,20 @@ export default function ContentManager({ config }) {
                     {(previews[config.imageField] || imgSrc(modal.data)) && (
                       <div style={{ marginTop: 10 }}>
                         <div style={{ fontSize: 12, color: "var(--muted)", marginBottom: 4 }}>Preview:</div>
-                        <img
-                          src={previews[config.imageField] || imgSrc(modal.data)}
-                          alt="Preview"
-                          style={{ maxHeight: 140, borderRadius: 4, objectFit: "cover", border: "1px solid #333" }}
-                        />
+                        {(files[config.imageField]?.type?.startsWith("video/") || (!files[config.imageField] && isVideoItem(modal.data))) ? (
+                          <video
+                            src={previews[config.imageField] || imgSrc(modal.data)}
+                            muted
+                            controls
+                            style={{ maxHeight: 200, borderRadius: 4, border: "1px solid #333", background: "#000" }}
+                          />
+                        ) : (
+                          <img
+                            src={previews[config.imageField] || imgSrc(modal.data)}
+                            alt="Preview"
+                            style={{ maxHeight: 140, borderRadius: 4, objectFit: "cover", border: "1px solid #333" }}
+                          />
+                        )}
                       </div>
                     )}
                   </div>
